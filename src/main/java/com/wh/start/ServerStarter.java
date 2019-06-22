@@ -3,6 +3,7 @@ package com.wh.start;
 import io.vertx.core.DeploymentOptions;
 import io.vertx.core.Vertx;
 import io.vertx.core.VertxOptions;
+import lombok.extern.slf4j.Slf4j;
 
 /*
 
@@ -31,27 +32,27 @@ import io.vertx.core.VertxOptions;
  * @ClassName: ServerStarter
  * @author: hw83770
  * @desc this is a simple demo of seckill web application
- * 
  */
+@Slf4j
 public class ServerStarter {
 
-	public static void main(String[] args) {
-		System.out.println("Server starting ...");
+    public static void main(String[] args) {
+        log.info("Server starting ...");
 
-		VertxOptions options = new VertxOptions();
-		options.setEventLoopPoolSize(8);
-		Vertx vertx = Vertx.vertx(options); // create vertx app
+        VertxOptions options = new VertxOptions();
+        options.setEventLoopPoolSize(2);
+        Vertx vertx = Vertx.vertx(options); // create vertx app
 
-		DeploymentOptions depOps = new DeploymentOptions();
-		depOps.setInstances(8);
-		vertx.deployVerticle(SeckillVerticle.class, depOps, ar -> { // deploy a verticle(an event loop app)
-			if (ar.succeeded()) {
-				System.out.println("done deployment");
-			} else {
-				System.out.println(ar.cause());
-			}
-		});
+        DeploymentOptions depOps = new DeploymentOptions();
+        depOps.setInstances(2);
+        vertx.deployVerticle(SeckillVerticle.class, depOps, ar -> { // deploy a verticle(an event loop app)
+            if (ar.succeeded()) {
+                log.info("done deployment");
+            } else {
+                log.error("deploy error: ", ar.cause());
+            }
+        });
 
-	}
+    }
 
 }
